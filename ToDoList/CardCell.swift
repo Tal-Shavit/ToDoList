@@ -9,26 +9,28 @@ import UIKit
 
 class CardCell: UITableViewCell {
 
+    @IBOutlet weak var checkButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
+    var isCheckmarkVisible: Bool = false
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        setupButtonAction()
     }
     
-//
-//    func configure(title: String){
-//        titleLabel.text = title
-//    }
     
-//    override func awakeFromNib() {
-//        super.awakeFromNib()
-//        // Initialization code
-//    }
-//
-//    override func setSelected(_ selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//
-//        // Configure the view for the selected state
-//    }
+    func setupButtonAction() {
+        checkButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+    }
+    
+    @objc func buttonTapped() {
+            if isCheckmarkVisible {
+                checkButton.setImage(UIImage(), for: .normal)
+            } else {
+                checkButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
+            }
+           
+            isCheckmarkVisible.toggle()
+        }
 
 }

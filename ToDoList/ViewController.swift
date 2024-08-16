@@ -13,11 +13,16 @@ class ViewController: UIViewController, UITabBarDelegate , UITableViewDataSource
     @IBOutlet weak var cardTableView: UITableView!
     @IBOutlet weak var statesCardView: UIView!
     
+    @IBOutlet weak var totalLabel: UILabel!
+    @IBOutlet weak var doneLabel: UILabel!
+    @IBOutlet weak var notDoneLabel: UILabel!
     var tasks: [String] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        initCardView()
         updateTableViewHeight()
+        updateTotalLabel()
     }
     
     func initCardView(){
@@ -64,6 +69,7 @@ class ViewController: UIViewController, UITabBarDelegate , UITableViewDataSource
             tasks.append(taskName)
             cardTableView.reloadData()
             updateTableViewHeight()
+            updateTotalLabel()
         }
     
     func updateTableViewHeight() {
@@ -71,6 +77,10 @@ class ViewController: UIViewController, UITabBarDelegate , UITableViewDataSource
             tableViewHeightConstraint.constant = contentHeight
             view.layoutIfNeeded() // מרענן את הפריסה עם הגובה החדש
         }
+    
+    func updateTotalLabel() {
+        totalLabel.text = "\(tasks.count)"
+    }
     
 }
 
