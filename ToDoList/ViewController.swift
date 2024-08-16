@@ -7,8 +7,8 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITabBarDelegate , UITableViewDataSource{
-
+class ViewController: UIViewController {
+    
     @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var cardTableView: UITableView!
     @IBOutlet weak var statesCardView: UIView!
@@ -17,7 +17,7 @@ class ViewController: UIViewController, UITabBarDelegate , UITableViewDataSource
     @IBOutlet weak var doneLabel: UILabel!
     @IBOutlet weak var notDoneLabel: UILabel!
     var tasks: [String] = []
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initCardView()
@@ -27,6 +27,15 @@ class ViewController: UIViewController, UITabBarDelegate , UITableViewDataSource
         NotificationCenter.default.addObserver(self, selector: #selector(checkmarkChanged), name: NSNotification.Name("checkmarkChanged"), object: nil)
     }
     
+    @IBAction func onSettings(_ sender: Any) {
+        if cardTableView.isEditing{
+            cardTableView.isEditing = false
+        }
+        else{
+            cardTableView.isEditing = true
+        }
+    }
+    
     func initCardView(){
         statesCardView.layer.cornerRadius = 10
         statesCardView.layer.shadowColor = UIColor.black.cgColor
@@ -34,6 +43,71 @@ class ViewController: UIViewController, UITabBarDelegate , UITableViewDataSource
         statesCardView.layer.shadowOffset = CGSize(width: 0, height: 2)
         statesCardView.layer.shadowRadius = 4
     }
+    
+    
+    @IBAction func addButtonTapped(_ sender: Any) {
+        let alertController = UIAlertController(title: "ADD TASK", message: nil, preferredStyle: .alert)
+        
+        alertController.addTextField { textField in
+            textField.placeholder = "Task Name"
+        }
+        
+        let addAction = UIAlertAction(title: "confirm", style: .default) { _ in
+            if let taskName = alertController.textFields?.first?.text, !taskName.isEmpty {
+                self.addTask(taskName)
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "cancel", style: .cancel, handler: nil)
+        
+        
+        alertController.addAction(addAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func addTask(_ taskName: String) {
+        tasks.append(taskName)
+        cardTableView.reloadData()
+        updateTableViewHeight()
+        updateTotalLabel()
+        updateDoneLabel()
+    }
+    
+    func updateTableViewHeight() {
+        let contentHeight = cardTableView.contentSize.height
+        tableViewHeightConstraint.constant = contentHeight
+        view.layoutIfNeeded() // מרענן את הפריסה עם הגובה החדש
+    }
+    
+    func updateTotalLabel() {
+        totalLabel.text = "\(tasks.count)"
+    }
+    
+    @objc func checkmarkChanged() {
+        updateDoneLabel()
+    }
+    
+    func updateDoneLabel() {
+        var doneCount = 0
+        var notDoneCount = 0
+        for i in 0..<tasks.count {
+            let indexPath = IndexPath(row: i, section: 0)
+            if let cell = cardTableView.cellForRow(at: indexPath) as? CardCell, cell.isCheckmarkVisible {
+                doneCount += 1
+            }
+            if let cell = cardTableView.cellForRow(at: indexPath) as? CardCell, !cell.isCheckmarkVisible {
+                notDoneCount += 1
+            }
+        }
+        doneLabel.text = "\(doneCount)"
+        notDoneLabel.text = "\(notDoneCount)"
+    }
+    
+}
+
+extension ViewController:  UITabBarDelegate , UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tasks.count
@@ -49,79 +123,20 @@ class ViewController: UIViewController, UITabBarDelegate , UITableViewDataSource
         return cell
     }
     
-    @IBAction func addButtonTapped(_ sender: Any) {
-        let alertController = UIAlertController(title: "ADD TASK", message: nil, preferredStyle: .alert)
-            
-            alertController.addTextField { textField in
-                textField.placeholder = "Task Name"
-            }
-            
-            let addAction = UIAlertAction(title: "confirm", style: .default) { _ in
-                if let taskName = alertController.textFields?.first?.text, !taskName.isEmpty {
-                    self.addTask(taskName)
-                }
-            }
-            
-            let cancelAction = UIAlertAction(title: "cancel", style: .cancel, handler: nil)
-            
-    
-            alertController.addAction(addAction)
-            alertController.addAction(cancelAction)
-            
-            present(alertController, animated: true, completion: nil)
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath){
+        if editingStyle == .delete{
+            tasks.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            self.updateTotalLabel()
+            self.updateDoneLabel()
+            self.updateTableViewHeight()
+        }
     }
     
-    func addTask(_ taskName: String) {
-            tasks.append(taskName)
-            cardTableView.reloadData()
-            updateTableViewHeight()
-            updateTotalLabel()
-            updateDoneLabel()
-        }
-    
-    func updateTableViewHeight() {
-            let contentHeight = cardTableView.contentSize.height
-            tableViewHeightConstraint.constant = contentHeight
-            view.layoutIfNeeded() // מרענן את הפריסה עם הגובה החדש
-        }
-    
-    func updateTotalLabel() {
-        totalLabel.text = "\(tasks.count)"
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        tasks.swapAt(sourceIndexPath.row, destinationIndexPath.row)
+        self.updateTotalLabel()
+        self.updateDoneLabel()
+        self.updateTableViewHeight()
     }
-    
-    @objc func checkmarkChanged() {
-            updateDoneLabel()
-        }
-        
-        func updateDoneLabel() {
-            var doneCount = 0
-            var notDoneCount = 0
-            for i in 0..<tasks.count {
-                let indexPath = IndexPath(row: i, section: 0)
-                if let cell = cardTableView.cellForRow(at: indexPath) as? CardCell, cell.isCheckmarkVisible {
-                    doneCount += 1
-                }
-                if let cell = cardTableView.cellForRow(at: indexPath) as? CardCell, !cell.isCheckmarkVisible {
-                    notDoneCount += 1
-                }
-            }
-            doneLabel.text = "\(doneCount)"
-            notDoneLabel.text = "\(notDoneCount)"
-        }
-    
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-            let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completionHandler) in
-                self.tasks.remove(at: indexPath.row) // הסרת המשימה מהמקום המתאים במערך
-                tableView.deleteRows(at: [indexPath], with: .automatic) // עדכון הטבלה
-                self.updateTotalLabel() // עדכון ה-totalLabel לאחר מחיקת משימה
-                self.updateDoneLabel() // עדכון ה-doneLabel לאחר מחיקת משימה
-                self.updateTableViewHeight() // עדכון הגובה של הטבלה
-                completionHandler(true) // מודיע שפעולת המחיקה הושלמה
-            }
-            deleteAction.backgroundColor = .red
-            
-            let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
-            return configuration
-        }
 }
-
