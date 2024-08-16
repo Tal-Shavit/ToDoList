@@ -23,6 +23,8 @@ class ViewController: UIViewController, UITabBarDelegate , UITableViewDataSource
         initCardView()
         updateTableViewHeight()
         updateTotalLabel()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(checkmarkChanged), name: NSNotification.Name("checkmarkChanged"), object: nil)
     }
     
     func initCardView(){
@@ -35,6 +37,10 @@ class ViewController: UIViewController, UITabBarDelegate , UITableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tasks.count
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -70,6 +76,7 @@ class ViewController: UIViewController, UITabBarDelegate , UITableViewDataSource
             cardTableView.reloadData()
             updateTableViewHeight()
             updateTotalLabel()
+            updateDoneLabel()
         }
     
     func updateTableViewHeight() {
@@ -82,5 +89,39 @@ class ViewController: UIViewController, UITabBarDelegate , UITableViewDataSource
         totalLabel.text = "\(tasks.count)"
     }
     
+    @objc func checkmarkChanged() {
+            updateDoneLabel()
+        }
+        
+        func updateDoneLabel() {
+            var doneCount = 0
+            var notDoneCount = 0
+            for i in 0..<tasks.count {
+                let indexPath = IndexPath(row: i, section: 0)
+                if let cell = cardTableView.cellForRow(at: indexPath) as? CardCell, cell.isCheckmarkVisible {
+                    doneCount += 1
+                }
+                if let cell = cardTableView.cellForRow(at: indexPath) as? CardCell, !cell.isCheckmarkVisible {
+                    notDoneCount += 1
+                }
+            }
+            doneLabel.text = "\(doneCount)"
+            notDoneLabel.text = "\(notDoneCount)"
+        }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+            let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completionHandler) in
+                self.tasks.remove(at: indexPath.row) // הסרת המשימה מהמקום המתאים במערך
+                tableView.deleteRows(at: [indexPath], with: .automatic) // עדכון הטבלה
+                self.updateTotalLabel() // עדכון ה-totalLabel לאחר מחיקת משימה
+                self.updateDoneLabel() // עדכון ה-doneLabel לאחר מחיקת משימה
+                self.updateTableViewHeight() // עדכון הגובה של הטבלה
+                completionHandler(true) // מודיע שפעולת המחיקה הושלמה
+            }
+            deleteAction.backgroundColor = .red
+            
+            let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+            return configuration
+        }
 }
 

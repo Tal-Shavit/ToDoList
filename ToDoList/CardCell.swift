@@ -11,7 +11,11 @@ class CardCell: UITableViewCell {
 
     @IBOutlet weak var checkButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
-    var isCheckmarkVisible: Bool = false
+    var isCheckmarkVisible: Bool = false {
+        didSet {
+            NotificationCenter.default.post(name: NSNotification.Name("checkmarkChanged"), object: nil)
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
