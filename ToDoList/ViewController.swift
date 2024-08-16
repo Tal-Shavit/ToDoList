@@ -7,21 +7,35 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITabBarDelegate , UITableViewDataSource{
 
+    @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var cardTableView: UITableView!
     @IBOutlet weak var statesCardView: UIView!
     
-    
+    var tasks: [String] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-
+        updateTableViewHeight()
+    }
+    
+    func initCardView(){
         statesCardView.layer.cornerRadius = 10
-            statesCardView.layer.shadowColor = UIColor.black.cgColor
-            statesCardView.layer.shadowOpacity = 0.2
-            statesCardView.layer.shadowOffset = CGSize(width: 0, height: 2)
-            statesCardView.layer.shadowRadius = 4
-
+        statesCardView.layer.shadowColor = UIColor.black.cgColor
+        statesCardView.layer.shadowOpacity = 0.2
+        statesCardView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        statesCardView.layer.shadowRadius = 4
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tasks.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cardCell", for: indexPath) as! CardCell
+        cell.titleLabel.text = tasks[indexPath.row]
+        return cell
     }
     
     @IBAction func addButtonTapped(_ sender: Any) {
@@ -33,7 +47,7 @@ class ViewController: UIViewController {
             
             let addAction = UIAlertAction(title: "confirm", style: .default) { _ in
                 if let taskName = alertController.textFields?.first?.text, !taskName.isEmpty {
-            
+                    self.addTask(taskName)
                 }
             }
             
@@ -45,6 +59,18 @@ class ViewController: UIViewController {
             
             present(alertController, animated: true, completion: nil)
     }
+    
+    func addTask(_ taskName: String) {
+            tasks.append(taskName)
+            cardTableView.reloadData()
+            updateTableViewHeight()
+        }
+    
+    func updateTableViewHeight() {
+            let contentHeight = cardTableView.contentSize.height
+            tableViewHeightConstraint.constant = contentHeight
+            view.layoutIfNeeded() // מרענן את הפריסה עם הגובה החדש
+        }
     
 }
 
