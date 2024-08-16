@@ -22,6 +22,26 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-
+    @IBAction func addButtonTapped(_ sender: Any) {
+        let alertController = UIAlertController(title: "ADD TASK", message: nil, preferredStyle: .alert)
+            
+            alertController.addTextField { textField in
+                textField.placeholder = "Task Name"
+            }
+            
+            let addAction = UIAlertAction(title: "confirm", style: .default) { _ in
+                if let taskName = alertController.textFields?.first?.text, !taskName.isEmpty {
+                }
+            }
+            
+            let cancelAction = UIAlertAction(title: "cancel", style: .cancel, handler: nil)
+            
+    
+            alertController.addAction(addAction)
+            alertController.addAction(cancelAction)
+            
+            present(alertController, animated: true, completion: nil)
+    }
+    
 }
 

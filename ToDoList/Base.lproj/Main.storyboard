@@ -29,6 +29,9 @@
                                 <buttonConfiguration key="configuration" style="plain" image="plus" catalog="system">
                                     <color key="baseForegroundColor" systemColor="systemBackgroundColor"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="addButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zhZ-CH-n6H"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily Task" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rDw-bv-Qau">
                                 <rect key="frame" x="156.66666666666666" y="75" width="116.99999999999997" height="30"/>
@@ -37,7 +40,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ere-UX-eWL">
-                                <rect key="frame" x="32" y="116" width="366" height="100"/>
+                                <rect key="frame" x="32" y="121" width="366" height="100"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="p8o-J1-52Q"/>
@@ -49,7 +52,7 @@
                         <constraints>
                             <constraint firstItem="rDw-bv-Qau" firstAttribute="leading" secondItem="Epv-06-1Zq" secondAttribute="trailing" constant="95" id="0Fj-RW-UYf"/>
                             <constraint firstItem="ere-UX-eWL" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="CbE-8c-mK8"/>
-                            <constraint firstItem="ere-UX-eWL" firstAttribute="top" secondItem="rDw-bv-Qau" secondAttribute="bottom" constant="11" id="HFM-Xy-VHX"/>
+                            <constraint firstItem="ere-UX-eWL" firstAttribute="top" secondItem="rDw-bv-Qau" secondAttribute="bottom" constant="16" id="HFM-Xy-VHX"/>
                             <constraint firstItem="yCl-IM-9E0" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="MF0-HO-yCU"/>
                             <constraint firstItem="yCl-IM-9E0" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="OCE-vr-66A"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ere-UX-eWL" secondAttribute="trailing" constant="32" id="RaG-uc-bXd"/>
