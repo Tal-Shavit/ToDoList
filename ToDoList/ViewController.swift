@@ -114,7 +114,7 @@ extension ViewController:  UITabBarDelegate , UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
+        return cardTableView.isEditing
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
