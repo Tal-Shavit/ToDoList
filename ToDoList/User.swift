@@ -1,8 +1,18 @@
-//
-//  User.swift
-//  ToDoList
-//
-//  Created by Student8 on 17/08/2024.
-//
 
 import Foundation
+
+class User {
+    let username: String
+    let email: String
+    let password: String
+    
+    init(username: String, email: String, password: String) {
+        self.username = username
+        self.email = email
+        self.password = password
+    }
+    
+    func displayUserInfo() -> String {
+        return "Username: \(username), Email: \(email)"
+    }
+}
