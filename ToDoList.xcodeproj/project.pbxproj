@@ -21,6 +21,7 @@
 		D7557D3E2C708FD1009D9114 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7557D3D2C708FD1009D9114 /* LoginController.swift */; };
 		D7557D402C7090AD009D9114 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7557D3F2C7090AD009D9114 /* User.swift */; };
 		D7557D472C70C4A8009D9114 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7557D462C70C4A8009D9114 /* GoogleService-Info.plist */; };
+		D7557D4C2C70CDF2009D9114 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D7557D4B2C70CDF2009D9114 /* FirebaseAuth */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7557D4C2C70CDF2009D9114 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,6 +95,7 @@
 				D7557D1B2C6F35CF009D9114 /* ToDoListTests */,
 				D7557D252C6F35CF009D9114 /* ToDoListUITests */,
 				D7557D032C6F35CF009D9114 /* Products */,
+				D7557D4A2C70CDF2009D9114 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -142,6 +145,13 @@
 			path = ToDoListUITests;
 			sourceTree = "<group>";
 		};
+		D7557D4A2C70CDF2009D9114 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -158,6 +168,9 @@
 			dependencies = (
 			);
 			name = ToDoList;
+			packageProductDependencies = (
+				D7557D4B2C70CDF2009D9114 /* FirebaseAuth */,
+			);
 			productName = ToDoList;
 			productReference = D7557D022C6F35CF009D9114 /* ToDoList.app */;
 			productType = "com.apple.product-type.application";
@@ -630,6 +643,14 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D7557D4B2C70CDF2009D9114 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D7557D482C70C6BA009D9114 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D7557CFA2C6F35CF009D9114 /* Project object */;
 }
