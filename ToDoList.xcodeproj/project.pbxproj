@@ -20,6 +20,7 @@
 		D7557D3C2C708F81009D9114 /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7557D3B2C708F81009D9114 /* SignUpController.swift */; };
 		D7557D3E2C708FD1009D9114 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7557D3D2C708FD1009D9114 /* LoginController.swift */; };
 		D7557D402C7090AD009D9114 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7557D3F2C7090AD009D9114 /* User.swift */; };
+		D7557D472C70C4A8009D9114 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7557D462C70C4A8009D9114 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		D7557D3B2C708F81009D9114 /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
 		D7557D3D2C708FD1009D9114 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		D7557D3F2C7090AD009D9114 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		D7557D462C70C4A8009D9114 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 				D7557D0B2C6F35CF009D9114 /* Main.storyboard */,
 				D7557D392C6F6C98009D9114 /* CardCell.swift */,
 				D7557D0E2C6F35CF009D9114 /* Assets.xcassets */,
+				D7557D462C70C4A8009D9114 /* GoogleService-Info.plist */,
 				D7557D102C6F35CF009D9114 /* LaunchScreen.storyboard */,
 				D7557D132C6F35CF009D9114 /* Info.plist */,
 				D7557D3B2C708F81009D9114 /* SignUpController.swift */,
@@ -227,6 +230,9 @@
 				Base,
 			);
 			mainGroup = D7557CF92C6F35CF009D9114;
+			packageReferences = (
+				D7557D482C70C6BA009D9114 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = D7557D032C6F35CF009D9114 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -244,6 +250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7557D122C6F35CF009D9114 /* LaunchScreen.storyboard in Resources */,
+				D7557D472C70C4A8009D9114 /* GoogleService-Info.plist in Resources */,
 				D7557D0F2C6F35CF009D9114 /* Assets.xcassets in Resources */,
 				D7557D0D2C6F35CF009D9114 /* Main.storyboard in Resources */,
 			);
@@ -612,6 +619,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D7557D482C70C6BA009D9114 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = D7557CFA2C6F35CF009D9114 /* Project object */;
 }

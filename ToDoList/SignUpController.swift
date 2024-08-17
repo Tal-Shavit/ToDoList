@@ -1,5 +1,4 @@
 import Foundation
-
 import UIKit
 
 class SingUpController: UIViewController {
@@ -49,6 +48,10 @@ class SingUpController: UIViewController {
             }
         
         let newUser = User(username: userNameTextField.text!, email: emailTextField.text!, password: passwordTextField.text!)
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let tasksController = storyboard.instantiateViewController(withIdentifier: "TasksID")
+            self.navigationController?.pushViewController(tasksController, animated: true)
     }
     
     @IBAction func onLoginButton(_ sender: Any) {

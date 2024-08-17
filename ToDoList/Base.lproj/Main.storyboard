@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vy5-OZ-oUm">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="mgC-fm-1pP">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
@@ -8,10 +8,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Login Controller-->
         <scene sceneID="3dc-wT-IT0">
             <objects>
-                <viewController id="vy5-OZ-oUm" sceneMemberID="viewController">
+                <viewController id="vy5-OZ-oUm" customClass="LoginController" customModule="ToDoList" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ciE-e2-854">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -20,7 +20,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="489"/>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="5BG-Qf-ObA">
-                                <rect key="frame" x="30" y="542" width="333" height="260"/>
+                                <rect key="frame" x="30" y="508" width="333" height="260"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="User Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Jpr-a0-1a3">
                                         <rect key="frame" x="0.0" y="0.0" width="333" height="50"/>
@@ -30,6 +30,9 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <action selector="emailTextField:" destination="WMh-h4-Qdc" eventType="editingDidEnd" id="h5e-Hc-XeQ"/>
+                                        </connections>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bbb-cE-ERF" userLabel="Password">
                                         <rect key="frame" x="0.0" y="80" width="333" height="50"/>
@@ -57,6 +60,9 @@
                                                 </fragment>
                                             </attributedString>
                                         </buttonConfiguration>
+                                        <connections>
+                                            <action selector="loginButton:" destination="vy5-OZ-oUm" eventType="touchUpInside" id="qz5-xF-ZTj"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pvj-Wf-MNy">
                                         <rect key="frame" x="0.0" y="225" width="333" height="35"/>
@@ -73,13 +79,13 @@
                                             <color key="baseForegroundColor" red="0.078431372550000003" green="0.49803921569999998" blue="0.68235294120000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </buttonConfiguration>
                                         <connections>
-                                            <segue destination="iya-lZ-Ngp" kind="presentation" modalPresentationStyle="fullScreen" id="apZ-rR-7W5"/>
+                                            <segue destination="ran-Uu-2b4" kind="presentation" modalPresentationStyle="fullScreen" id="apZ-rR-7W5"/>
                                         </connections>
                                     </button>
                                 </subviews>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome Back!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rJz-Sl-Eyg">
-                                <rect key="frame" x="48" y="48" width="140" height="100"/>
+                                <rect key="frame" x="48" y="151" width="140" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="140" id="DQO-Z0-NJG"/>
                                     <constraint firstAttribute="height" constant="100" id="cNu-MU-9Qk"/>
@@ -104,15 +110,20 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="cta-E4-uTT"/>
+                    <connections>
+                        <outlet property="emailTextField" destination="Jpr-a0-1a3" id="gj0-Gi-nOZ"/>
+                        <outlet property="passwordTextField" destination="bbb-cE-ERF" id="Si3-Gx-mQM"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hd2-pZ-job" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="WMh-h4-Qdc" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-1275.3623188405797" y="3.3482142857142856"/>
+            <point key="canvasLocation" x="-348.85496183206106" y="2.8169014084507045"/>
         </scene>
         <!--Sing Up Controller-->
         <scene sceneID="bro-uM-JCF">
             <objects>
-                <viewController id="iya-lZ-Ngp" customClass="SingUpController" customModule="ToDoList" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="sugnUpID" id="iya-lZ-Ngp" customClass="SingUpController" customModule="ToDoList" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="QnI-j1-gSF">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -228,13 +239,13 @@
                                         </buttonConfiguration>
                                         <connections>
                                             <action selector="onLoginButton:" destination="iya-lZ-Ngp" eventType="touchUpInside" id="1XL-P4-TiS"/>
-                                            <segue destination="vy5-OZ-oUm" kind="presentation" modalPresentationStyle="fullScreen" id="dZs-C5-7oW"/>
+                                            <segue destination="mgC-fm-1pP" kind="presentation" modalPresentationStyle="fullScreen" id="dZs-C5-7oW"/>
                                         </connections>
                                     </button>
                                 </subviews>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create Account!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LnO-ap-Md3">
-                                <rect key="frame" x="32" y="48" width="140" height="100"/>
+                                <rect key="frame" x="32" y="92" width="140" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="140" id="V6v-sM-6H2"/>
                                     <constraint firstAttribute="height" constant="100" id="opO-ZH-WbJ"/>
@@ -266,12 +277,12 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sz5-JD-koa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="fyf-Qf-4VJ" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-570.2290076335878" y="3.5211267605633805"/>
+            <point key="canvasLocation" x="1283.206106870229" y="3.5211267605633805"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ToDoList" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TasksID" id="BYZ-38-t0r" customClass="ViewController" customModule="ToDoList" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -511,7 +522,43 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="133.59999999999999" y="4.4334975369458132"/>
+            <point key="canvasLocation" x="1985.4961832061067" y="4.2253521126760569"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="VMO-a1-jfO">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="mgC-fm-1pP" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="cLy-1Y-t1K">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="vy5-OZ-oUm" kind="relationship" relationship="rootViewController" id="MBj-Jl-GiF"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="L4m-Au-Qs3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1275.5725190839694" y="2.8169014084507045"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="IxC-CX-Pg2">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ran-Uu-2b4" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1BW-mA-Ivt">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="iya-lZ-Ngp" kind="relationship" relationship="rootViewController" id="0pq-7v-wVC"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LqN-Yt-76P" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="356.48854961832058" y="3.5211267605633805"/>
         </scene>
     </scenes>
     <resources>
