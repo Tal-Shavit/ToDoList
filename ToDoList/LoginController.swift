@@ -2,11 +2,14 @@
 import Foundation
 import UIKit
 import Firebase
+import FirebaseDatabase
 
 class LoginController: UIViewController {
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    
+    var user: User?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,15 +31,53 @@ class LoginController: UIViewController {
         
         Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
             if let error = error {
-                // טיפול בשגיאה והצגת הודעה למשתמש
+                
                 return
             }
             
-            // אם ההתחברות הצליחה, מעבר למסך המשימות
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let tasksController = storyboard.instantiateViewController(withIdentifier: "TasksID")
-            self.navigationController?.pushViewController(tasksController, animated: true)
+            // טעינת ה-User מ-Realtime Database
+            if let firebaseUser = authResult?.user {
+                print("a")
+                let ref = Database.database().reference()
+                ref.child("users").child(firebaseUser.uid).observeSingleEvent(of: .value) { snapshot in
+                    if let data = snapshot.value as? [String: Any] {
+                        print("b")
+                        let username = data["username"] as? String ?? ""
+                        let email = data["email"] as? String ?? ""
+                        let tasksArray = data["tasks"] as? [[String: Any]] ?? []
+                        
+                        // יצירת אובייקט המשתמש
+                        let tasks = tasksArray.map { dict -> Task in
+                            let name = dict["name"] as? String ?? ""
+                            let isChecked = dict["isChecked"] as? Bool ?? false
+                            return Task(name: name, isChecked: isChecked)
+                        }
+                        
+                        
+                        self.user = User(username: username, email: email, tasks: tasks)
+                        
+                        // מעבר למסך המשימות
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        let tasksController = storyboard.instantiateViewController(withIdentifier: "TasksID")
+                        self.navigationController?.pushViewController(tasksController, animated: true)
+                    } else {
+                        print("User document does not exist")
+                    }
+                }
+            }
         }
+        
+        //        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+        //            if let error = error {
+        //                // טיפול בשגיאה והצגת הודעה למשתמש
+        //                return
+        //            }
+        //
+        //            // אם ההתחברות הצליחה, מעבר למסך המשימות
+        //            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        //            let tasksController = storyboard.instantiateViewController(withIdentifier: "TasksID")
+        //            self.navigationController?.pushViewController(tasksController, animated: true)
+        //        }
     }
     
     

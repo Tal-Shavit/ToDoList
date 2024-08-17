@@ -1,5 +1,7 @@
 
 import UIKit
+import FirebaseDatabase
+import FirebaseAuth
 
 class ViewController: UIViewController {
     
@@ -10,7 +12,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var doneLabel: UILabel!
     @IBOutlet weak var notDoneLabel: UILabel!
-    var tasks: [String] = []
+    
+    var user: User?
+    var tasks: [Task] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +23,8 @@ class ViewController: UIViewController {
         updateTotalLabel()
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkmarkChanged), name: NSNotification.Name("checkmarkChanged"), object: nil)
+        
+        loadTasksFromFirebase()
     }
     
     @IBAction func onSettings(_ sender: Any) {
@@ -48,7 +54,7 @@ class ViewController: UIViewController {
         
         let addAction = UIAlertAction(title: "confirm", style: .default) { _ in
             if let taskName = alertController.textFields?.first?.text, !taskName.isEmpty {
-                self.addTask(taskName)
+                self.addTask(Task(name: taskName))
             }
         }
         
@@ -61,12 +67,50 @@ class ViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    func addTask(_ taskName: String) {
-        tasks.append(taskName)
+    func loadTasksFromFirebase() {
+        guard let firebaseUser = Auth.auth().currentUser else { return }
+        let ref = Database.database().reference().child("users").child(firebaseUser.uid).child("tasks")
+        
+        ref.observe(.value) { snapshot in
+            self.tasks.removeAll()
+            
+            for child in snapshot.children {
+                if let childSnapshot = child as? DataSnapshot,
+                   let taskData = childSnapshot.value as? [String: Any],
+                   let taskName = taskData["name"] as? String,
+                   let isChecked = taskData["isChecked"] as? Bool {
+                    let task = Task(name: taskName, isChecked: isChecked)
+                    self.tasks.append(task)
+                }
+            }
+            
+            self.cardTableView.reloadData()
+            self.updateTableViewHeight()
+            self.updateTotalLabel()
+            self.updateDoneLabel()
+        }
+    }
+    
+    func addTask(_ task: Task) {
+        tasks.append(task)
         cardTableView.reloadData()
         updateTableViewHeight()
         updateTotalLabel()
         updateDoneLabel()
+        saveTaskToFirebase(task)
+    }
+    
+    func saveTaskToFirebase(_ task: Task) {
+        guard let firebaseUser = Auth.auth().currentUser else { return }
+        let ref = Database.database().reference().child("users").child(firebaseUser.uid).child("tasks")
+        
+        let taskDict: [String: Any] = [
+            "name": task.name,
+            "isChecked": task.isChecked
+        ]
+        
+        let newTaskRef = ref.childByAutoId()
+        newTaskRef.setValue(taskDict)
     }
     
     func updateTableViewHeight() {
@@ -89,9 +133,37 @@ class ViewController: UIViewController {
         for i in 0..<tasks.count {
             let indexPath = IndexPath(row: i, section: 0)
             if let cell = cardTableView.cellForRow(at: indexPath) as? CardCell, cell.isCheckmarkVisible {
+                getTaskByName(taskName: tasks[i].name) { snapshot in
+                    if let taskSnapshot = snapshot {
+                        let newValues = ["isChecked": true] // ערכים חדשים לעדכון
+                        self.updateTask(taskSnapshot: taskSnapshot, newValues: newValues) { error in
+                            if let error = error {
+                                print("Error: \(error.localizedDescription)")
+                            } else {
+                                print("Task updated successfully")
+                            }
+                        }
+                    } else {
+                        print("Task not found")
+                    }
+                }
                 doneCount += 1
             }
             if let cell = cardTableView.cellForRow(at: indexPath) as? CardCell, !cell.isCheckmarkVisible {
+                getTaskByName(taskName: tasks[i].name) { snapshot in
+                    if let taskSnapshot = snapshot {
+                        let newValues = ["isChecked": false] // ערכים חדשים לעדכון
+                        self.updateTask(taskSnapshot: taskSnapshot, newValues: newValues) { error in
+                            if let error = error {
+                                print("Error: \(error.localizedDescription)")
+                            } else {
+                                print("Task updated successfully")
+                            }
+                        }
+                    } else {
+                        print("Task not found")
+                    }
+                }
                 notDoneCount += 1
             }
         }
@@ -99,7 +171,37 @@ class ViewController: UIViewController {
         notDoneLabel.text = "\(notDoneCount)"
     }
     
+    func getTaskByName(taskName: String, completion: @escaping (DataSnapshot?) -> Void) {
+        guard let firebaseUser = Auth.auth().currentUser else { return }
+        let ref = Database.database().reference().child("users").child(firebaseUser.uid).child("tasks")
+        
+        ref.queryOrdered(byChild: "name").queryEqual(toValue: taskName).observeSingleEvent(of: .value) { snapshot in
+            for child in snapshot.children {
+                if let childSnapshot = child as? DataSnapshot {
+                    completion(childSnapshot) // החזר את ה-Snapshot של המשימה שנמצאה
+                    return
+                }
+            }
+            completion(nil) // אם לא נמצאה משימה מתאימה
+        }
+    }
+    
+    func updateTask(taskSnapshot: DataSnapshot, newValues: [String: Any], completion: @escaping (Error?) -> Void) {
+        guard let firebaseUser = Auth.auth().currentUser else { return }
+        let ref = taskSnapshot.ref // הפנייה ישירות למשימה שנמצאה
+        
+        ref.updateChildValues(newValues) { error, _ in
+            completion(error) // החזר שגיאה אם יש
+        }
+    }
+    
 }
+
+
+
+
+
+
 
 extension ViewController:  UITabBarDelegate , UITableViewDataSource{
     
@@ -113,7 +215,7 @@ extension ViewController:  UITabBarDelegate , UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cardCell", for: indexPath) as! CardCell
-        cell.titleLabel.text = tasks[indexPath.row]
+        cell.titleLabel.text = tasks[indexPath.row].name
         return cell
     }
     

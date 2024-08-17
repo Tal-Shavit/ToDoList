@@ -1,9 +1,9 @@
 import Foundation
 import UIKit
 import FirebaseAuth
+import FirebaseDatabase
 
 class SingUpController: UIViewController {
-    
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var userNameTextField: UITextField!
@@ -25,50 +25,83 @@ class SingUpController: UIViewController {
         
         guard let email = emailTextField.text, !email.isEmpty else {
             highlightTextField(emailTextField)
-                        return
+            return
         }
-       resetTextField(emailTextField)
+        resetTextField(emailTextField)
         
         guard let password = passwordTextField.text, !password.isEmpty else {
-          highlightTextField(passwordTextField)
+            highlightTextField(passwordTextField)
             return
         }
-       resetTextField(passwordTextField)
+        resetTextField(passwordTextField)
         
         guard let confirm = confirmTextField.text, !confirm.isEmpty else {
-           highlightTextField(confirmTextField)
+            highlightTextField(confirmTextField)
             return
         }
-       resetTextField(confirmTextField)
+        resetTextField(confirmTextField)
         
         guard password == confirm else {
-                highlightTextField(passwordTextField)
-                highlightTextField(confirmTextField)
-                showErrorAlert(message: "Passwords not match")
-                return
-            }
-     
+            highlightTextField(passwordTextField)
+            highlightTextField(confirmTextField)
+            showErrorAlert(message: "Passwords not match")
+            return
+        }
+        
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
                     if let error = error {
-                        print("Error creating user: \(error.localizedDescription)")
+                        self.showErrorAlert(message: "Error creating user: \(error.localizedDescription)")
                         return
                     }
                     
-            let newUser = User(username: self.userNameTextField.text!, email: self.emailTextField.text!, password: self.passwordTextField.text!)
-                    // אם המשתמש נוצר בהצלחה, את יכולה להמשיך למסך המשימות
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let tasksController = storyboard.instantiateViewController(withIdentifier: "TasksID")
-                    self.navigationController?.pushViewController(tasksController, animated: true)
+                    // שמירת המשתמש עם משימות ריקות ב-Realtime Database
+                    if let firebaseUser = authResult?.user {
+                        let ref = Database.database().reference()
+                        let userDict: [String: Any] = [
+                            "username": username,
+                            "email": email,
+                            "tasks": [] // מערך ריק למשימות בשלב זה
+                        ]
+                        ref.child("users").child(firebaseUser.uid).setValue(userDict) { error, _ in
+                            if let error = error {
+                                print("Error saving user: \(error.localizedDescription)")
+                            } else {
+                                print("User saved successfully!")
+                                
+                                // מעבר למסך המשימות
+                                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                let tasksController = storyboard.instantiateViewController(withIdentifier: "TasksID")
+                                self.navigationController?.pushViewController(tasksController, animated: true)
+                            }
+                        }
+                    }
                 }
         
-//        let newUser = User(username: userNameTextField.text!, email: emailTextField.text!, password: passwordTextField.text!)
-//
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//            let tasksController = storyboard.instantiateViewController(withIdentifier: "TasksID")
-//            self.navigationController?.pushViewController(tasksController, animated: true)
-    }
-    
-    @IBAction func onLoginButton(_ sender: Any) {
+//        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+//            if let error = error {
+//                self.showErrorAlert(message: "Error creating user: \(error.localizedDescription)")
+//                return
+//            }
+//            
+//            // יצירת אובייקט User ושמירתו ב-Realtime Database
+//            if let firebaseUser = authResult?.user {
+//                let newUser = User(username: self.userNameTextField.text!, email: self.emailTextField.text!)
+//                
+//                let ref = Database.database().reference()
+//                ref.child("users").child(firebaseUser.uid).setValue(newUser.toDictionary()) { error, _ in
+//                    if let error = error {
+//                        print("Error saving user: \(error.localizedDescription)")
+//                    } else {
+//                        print("User saved successfully!")
+//                        
+//                        // מעבר למסך המשימות
+//                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//                        let tasksController = storyboard.instantiateViewController(withIdentifier: "TasksID")
+//                        self.navigationController?.pushViewController(tasksController, animated: true)
+//                    }
+//                }
+//            }
+//        }
     }
     
     func resetTextField(_ textField: UITextField) {

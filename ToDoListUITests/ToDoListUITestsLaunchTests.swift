@@ -1,9 +1,3 @@
-//
-//  ToDoListUITestsLaunchTests.swift
-//  ToDoListUITests
-//
-//  Created by Student8 on 16/08/2024.
-//
 
 import XCTest
 

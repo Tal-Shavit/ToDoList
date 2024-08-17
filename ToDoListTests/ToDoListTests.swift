@@ -1,9 +1,4 @@
-//
-//  ToDoListTests.swift
-//  ToDoListTests
-//
-//  Created by Student8 on 16/08/2024.
-//
+
 
 import XCTest
 @testable import ToDoList
