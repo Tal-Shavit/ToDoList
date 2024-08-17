@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import FirebaseAuth
 
 class SingUpController: UIViewController {
     
@@ -46,12 +47,25 @@ class SingUpController: UIViewController {
                 showErrorAlert(message: "Passwords not match")
                 return
             }
+     
+        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                    if let error = error {
+                        print("Error creating user: \(error.localizedDescription)")
+                        return
+                    }
+                    
+            let newUser = User(username: self.userNameTextField.text!, email: self.emailTextField.text!, password: self.passwordTextField.text!)
+                    // אם המשתמש נוצר בהצלחה, את יכולה להמשיך למסך המשימות
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let tasksController = storyboard.instantiateViewController(withIdentifier: "TasksID")
+                    self.navigationController?.pushViewController(tasksController, animated: true)
+                }
         
-        let newUser = User(username: userNameTextField.text!, email: emailTextField.text!, password: passwordTextField.text!)
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let tasksController = storyboard.instantiateViewController(withIdentifier: "TasksID")
-            self.navigationController?.pushViewController(tasksController, animated: true)
+//        let newUser = User(username: userNameTextField.text!, email: emailTextField.text!, password: passwordTextField.text!)
+//
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//            let tasksController = storyboard.instantiateViewController(withIdentifier: "TasksID")
+//            self.navigationController?.pushViewController(tasksController, animated: true)
     }
     
     @IBAction func onLoginButton(_ sender: Any) {
