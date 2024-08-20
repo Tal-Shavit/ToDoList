@@ -79,6 +79,7 @@ class ViewController: UIViewController {
                    let taskData = childSnapshot.value as? [String: Any],
                    let taskName = taskData["name"] as? String,
                    let isChecked = taskData["isChecked"] as? Bool {
+                
                     let task = Task(name: taskName, isChecked: isChecked)
                     self.tasks.append(task)
                 }
@@ -116,7 +117,7 @@ class ViewController: UIViewController {
     func updateTableViewHeight() {
         let contentHeight = cardTableView.contentSize.height
         tableViewHeightConstraint.constant = contentHeight
-        view.layoutIfNeeded() // מרענן את הפריסה עם הגובה החדש
+        view.layoutIfNeeded()
     }
     
     func updateTotalLabel() {
@@ -152,7 +153,7 @@ class ViewController: UIViewController {
             if let cell = cardTableView.cellForRow(at: indexPath) as? CardCell, !cell.isCheckmarkVisible {
                 getTaskByName(taskName: tasks[i].name) { snapshot in
                     if let taskSnapshot = snapshot {
-                        let newValues = ["isChecked": false] // ערכים חדשים לעדכון
+                        let newValues = ["isChecked": false]
                         self.updateTask(taskSnapshot: taskSnapshot, newValues: newValues) { error in
                             if let error = error {
                                 print("Error: \(error.localizedDescription)")
@@ -178,29 +179,24 @@ class ViewController: UIViewController {
         ref.queryOrdered(byChild: "name").queryEqual(toValue: taskName).observeSingleEvent(of: .value) { snapshot in
             for child in snapshot.children {
                 if let childSnapshot = child as? DataSnapshot {
-                    completion(childSnapshot) // החזר את ה-Snapshot של המשימה שנמצאה
+                    completion(childSnapshot)
                     return
                 }
             }
-            completion(nil) // אם לא נמצאה משימה מתאימה
+            completion(nil)
         }
     }
     
     func updateTask(taskSnapshot: DataSnapshot, newValues: [String: Any], completion: @escaping (Error?) -> Void) {
         guard let firebaseUser = Auth.auth().currentUser else { return }
-        let ref = taskSnapshot.ref // הפנייה ישירות למשימה שנמצאה
+        let ref = taskSnapshot.ref
         
         ref.updateChildValues(newValues) { error, _ in
-            completion(error) // החזר שגיאה אם יש
+            completion(error)
         }
     }
     
 }
-
-
-
-
-
 
 
 extension ViewController:  UITabBarDelegate , UITableViewDataSource{
@@ -215,8 +211,16 @@ extension ViewController:  UITabBarDelegate , UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cardCell", for: indexPath) as! CardCell
-        cell.titleLabel.text = tasks[indexPath.row].name
-        return cell
+                let task = tasks[indexPath.row]
+                cell.isCheckmarkVisible = task.isChecked
+                if cell.isCheckmarkVisible {
+                    cell.checkButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
+                } else {
+                    cell.checkButton.setImage(UIImage(), for: .normal)
+                }
+                
+                cell.titleLabel.text = task.name
+                return cell
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath){
