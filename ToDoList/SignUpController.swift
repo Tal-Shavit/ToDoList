@@ -13,7 +13,9 @@ class SingUpController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        passwordTextField.isSecureTextEntry = true
+        confirmTextField.isSecureTextEntry = true
+    
     }
     
     @IBAction func onSignUpButton(_ sender: Any) {
@@ -29,7 +31,7 @@ class SingUpController: UIViewController {
         }
         resetTextField(emailTextField)
         
-        guard let password = passwordTextField.text, !password.isEmpty else {
+        guard let password = passwordTextField.text, !password.isEmpty, password.count >= 6 else {
             highlightTextField(passwordTextField)
             return
         }

@@ -13,6 +13,7 @@ class LoginController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        passwordTextField.isSecureTextEntry = true
         
     }
     
@@ -35,7 +36,6 @@ class LoginController: UIViewController {
                 return
             }
             
-            // טעינת ה-User מ-Realtime Database
             if let firebaseUser = authResult?.user {
                 print("a")
                 let ref = Database.database().reference()
@@ -46,7 +46,6 @@ class LoginController: UIViewController {
                         let email = data["email"] as? String ?? ""
                         let tasksArray = data["tasks"] as? [[String: Any]] ?? []
                         
-                        // יצירת אובייקט המשתמש
                         let tasks = tasksArray.map { dict -> Task in
                             let name = dict["name"] as? String ?? ""
                             let isChecked = dict["isChecked"] as? Bool ?? false
@@ -55,29 +54,14 @@ class LoginController: UIViewController {
                         
                         
                         self.user = User(username: username, email: email, tasks: tasks)
-                        
-                        // מעבר למסך המשימות
+
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
                         let tasksController = storyboard.instantiateViewController(withIdentifier: "TasksID")
                         self.navigationController?.pushViewController(tasksController, animated: true)
-                    } else {
-                        print("User document does not exist")
                     }
                 }
             }
         }
-        
-        //        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
-        //            if let error = error {
-        //                // טיפול בשגיאה והצגת הודעה למשתמש
-        //                return
-        //            }
-        //
-        //            // אם ההתחברות הצליחה, מעבר למסך המשימות
-        //            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        //            let tasksController = storyboard.instantiateViewController(withIdentifier: "TasksID")
-        //            self.navigationController?.pushViewController(tasksController, animated: true)
-        //        }
     }
     
     
