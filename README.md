@@ -29,3 +29,10 @@ TodoList App is a simple iOS application that allows users to manage their daily
    ```bash
    git clone https://github.com/yourusername/TodoList.git
 
+## Usage
+- **Sign Up:** Create a new account using a unique email and password.
+- **Login:** Log in using your registered credentials.
+- **Add Tasks:** Tap on the add button to add new tasks.
+- **Complete Tasks:** Tap on a task to mark it as completed.
+- **Delete Tasks:**  Tap on the edit button swipe left on a task to delete it.
+- **Reorder Tasks:** Tap on the edit button to reorder tasks.
