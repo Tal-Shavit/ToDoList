@@ -13,8 +13,7 @@ class SignUpController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //passwordTextField.isSecureTextEntry = true
-        //confirmTextField.isSecureTextEntry = true
+        self.navigationItem.hidesBackButton = true
     }
     
     @IBAction func onLogin(_ sender: Any) {

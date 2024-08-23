@@ -100,6 +100,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		50ACE63B2C78A667008CE866 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D7557D392C6F6C98009D9114 /* CardCell.swift */,
+				D7557D3F2C7090AD009D9114 /* User.swift */,
+				D7557D4D2C70D9AC009D9114 /* Task.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		50ACE63C2C78A695008CE866 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D75523EA2C750EFB00747A5A /* LottieController.swift */,
+				D7557D3D2C708FD1009D9114 /* LoginController.swift */,
+				D7557D3B2C708F81009D9114 /* SignUpController.swift */,
+				D7557D092C6F35CF009D9114 /* ViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		D7557CF92C6F35CF009D9114 = {
 			isa = PBXGroup;
 			children = (
@@ -124,21 +145,16 @@
 		D7557D042C6F35CF009D9114 /* ToDoList */ = {
 			isa = PBXGroup;
 			children = (
+				50ACE63C2C78A695008CE866 /* Controllers */,
+				50ACE63B2C78A667008CE866 /* Models */,
 				D7557D052C6F35CF009D9114 /* AppDelegate.swift */,
 				D7557D072C6F35CF009D9114 /* SceneDelegate.swift */,
-				D7557D092C6F35CF009D9114 /* ViewController.swift */,
 				D75523EC2C7512AF00747A5A /* Animation - 1724176978489.json */,
 				D7557D0B2C6F35CF009D9114 /* Main.storyboard */,
-				D7557D392C6F6C98009D9114 /* CardCell.swift */,
 				D7557D0E2C6F35CF009D9114 /* Assets.xcassets */,
 				D7557D462C70C4A8009D9114 /* GoogleService-Info.plist */,
 				D7557D102C6F35CF009D9114 /* LaunchScreen.storyboard */,
 				D7557D132C6F35CF009D9114 /* Info.plist */,
-				D7557D3B2C708F81009D9114 /* SignUpController.swift */,
-				D7557D3D2C708FD1009D9114 /* LoginController.swift */,
-				D7557D3F2C7090AD009D9114 /* User.swift */,
-				D7557D4D2C70D9AC009D9114 /* Task.swift */,
-				D75523EA2C750EFB00747A5A /* LottieController.swift */,
 			);
 			path = ToDoList;
 			sourceTree = "<group>";

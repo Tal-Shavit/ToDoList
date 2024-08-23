@@ -79,7 +79,7 @@ class ViewController: UIViewController {
                    let taskData = childSnapshot.value as? [String: Any],
                    let taskName = taskData["name"] as? String,
                    let isChecked = taskData["isChecked"] as? Bool {
-                
+                    
                     let task = Task(name: taskName, isChecked: isChecked)
                     self.tasks.append(task)
                 }
@@ -138,11 +138,11 @@ class ViewController: UIViewController {
                     if let taskSnapshot = snapshot {
                         let newValues = ["isChecked": true] // ערכים חדשים לעדכון
                         self.updateTask(taskSnapshot: taskSnapshot, newValues: newValues) { error in
-//                            if let error = error {
-//                                print("Error: \(error.localizedDescription)")
-//                            } else {
-//                                print("Task updated successfully")
-//                            }
+                            //                            if let error = error {
+                            //                                print("Error: \(error.localizedDescription)")
+                            //                            } else {
+                            //                                print("Task updated successfully")
+                            //                            }
                         }
                     } else {
                         print("Task not found")
@@ -155,11 +155,11 @@ class ViewController: UIViewController {
                     if let taskSnapshot = snapshot {
                         let newValues = ["isChecked": false]
                         self.updateTask(taskSnapshot: taskSnapshot, newValues: newValues) { error in
-//                            if let error = error {
-//                                print("Error: \(error.localizedDescription)")
-//                            } else {
-//                                print("Task updated successfully")
-//                            }
+                            //                            if let error = error {
+                            //                                print("Error: \(error.localizedDescription)")
+                            //                            } else {
+                            //                                print("Task updated successfully")
+                            //                            }
                         }
                     } else {
                         print("Task not found")
@@ -211,16 +211,16 @@ extension ViewController:  UITabBarDelegate , UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cardCell", for: indexPath) as! CardCell
-                let task = tasks[indexPath.row]
-                cell.isCheckmarkVisible = task.isChecked
-                if cell.isCheckmarkVisible {
-                    cell.checkButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
-                } else {
-                    cell.checkButton.setImage(UIImage(), for: .normal)
-                }
-                
-                cell.titleLabel.text = task.name
-                return cell
+        let task = tasks[indexPath.row]
+        cell.isCheckmarkVisible = task.isChecked
+        if cell.isCheckmarkVisible {
+            cell.checkButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
+        } else {
+            cell.checkButton.setImage(UIImage(), for: .normal)
+        }
+        
+        cell.titleLabel.text = task.name
+        return cell
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath){
@@ -234,9 +234,34 @@ extension ViewController:  UITabBarDelegate , UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        tasks.swapAt(sourceIndexPath.row, destinationIndexPath.row)
-        self.updateTotalLabel()
-        self.updateDoneLabel()
-        self.updateTableViewHeight()
+        //        tasks.swapAt(sourceIndexPath.row, destinationIndexPath.row)
+        //        self.updateTotalLabel()
+        //        self.updateDoneLabel()
+        //        self.updateTableViewHeight()
+        let movedTask = tasks.remove(at: sourceIndexPath.row)
+        tasks.insert(movedTask, at: destinationIndexPath.row)
+        
+        tableView.reloadData()
+        //        self.updateTotalLabel()
+        //        self.updateDoneLabel()
+        //        self.updateTableViewHeight()
+        updateTasksOrderInFirebase()
+    }
+    
+    func updateTasksOrderInFirebase() {
+        guard let firebaseUser = Auth.auth().currentUser else { return }
+        let ref = Database.database().reference().child("users").child(firebaseUser.uid).child("tasks")
+        
+        var updatedTasks = [String: [String: Any]]()
+        
+        for (index, task) in tasks.enumerated() {
+            let taskDict: [String: Any] = [
+                "name": task.name,
+                "isChecked": task.isChecked
+            ]
+            updatedTasks["task\(index)"] = taskDict
+        }
+        
+        ref.setValue(updatedTasks)
     }
 }
