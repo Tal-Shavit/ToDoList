@@ -138,11 +138,11 @@ class ViewController: UIViewController {
                     if let taskSnapshot = snapshot {
                         let newValues = ["isChecked": true] // ערכים חדשים לעדכון
                         self.updateTask(taskSnapshot: taskSnapshot, newValues: newValues) { error in
-                            if let error = error {
-                                print("Error: \(error.localizedDescription)")
-                            } else {
-                                print("Task updated successfully")
-                            }
+//                            if let error = error {
+//                                print("Error: \(error.localizedDescription)")
+//                            } else {
+//                                print("Task updated successfully")
+//                            }
                         }
                     } else {
                         print("Task not found")
@@ -155,11 +155,11 @@ class ViewController: UIViewController {
                     if let taskSnapshot = snapshot {
                         let newValues = ["isChecked": false]
                         self.updateTask(taskSnapshot: taskSnapshot, newValues: newValues) { error in
-                            if let error = error {
-                                print("Error: \(error.localizedDescription)")
-                            } else {
-                                print("Task updated successfully")
-                            }
+//                            if let error = error {
+//                                print("Error: \(error.localizedDescription)")
+//                            } else {
+//                                print("Task updated successfully")
+//                            }
                         }
                     } else {
                         print("Task not found")
