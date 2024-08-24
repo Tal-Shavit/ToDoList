@@ -23,16 +23,16 @@ class LoginController: UIViewController {
     
     @IBAction func loginButton(_ sender: Any) {
         guard let email = emailTextField.text, !email.isEmpty else {
-            highlightTextField(emailTextField)
+            TextFieldUtilities.highlightTextField(emailTextField)
             return
         }
-        resetTextField(emailTextField)
+        TextFieldUtilities.resetTextField(emailTextField)
         
         guard let password = passwordTextField.text, !password.isEmpty else {
-            highlightTextField(passwordTextField)
+            TextFieldUtilities.highlightTextField(passwordTextField)
             return
         }
-        resetTextField(passwordTextField)
+        TextFieldUtilities.resetTextField(passwordTextField)
         
         Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
             
@@ -63,15 +63,4 @@ class LoginController: UIViewController {
         let controller = storyboard.instantiateViewController(withIdentifier: identifier)
         self.navigationController?.pushViewController(controller, animated: true)
     }
-    
-    func resetTextField(_ textField: UITextField) {
-        textField.layer.borderColor = UIColor.clear.cgColor
-        textField.layer.borderWidth = 0.0
-    }
-    
-    func highlightTextField(_ textField: UITextField) {
-        textField.layer.borderColor = UIColor.red.cgColor
-        textField.layer.borderWidth = 1.0
-    }
-    
 }

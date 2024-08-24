@@ -22,32 +22,32 @@ class SignUpController: UIViewController {
     
     @IBAction func onSignUpButton(_ sender: Any) {
         guard let username = userNameTextField.text, !username.isEmpty else {
-            highlightTextField(userNameTextField)
+            TextFieldUtilities.highlightTextField(userNameTextField)
             return
         }
-        resetTextField(userNameTextField)
+        TextFieldUtilities.resetTextField(userNameTextField)
         
         guard let email = emailTextField.text, !email.isEmpty else {
-            highlightTextField(emailTextField)
+            TextFieldUtilities.highlightTextField(emailTextField)
             return
         }
-        resetTextField(emailTextField)
+        TextFieldUtilities.resetTextField(emailTextField)
         
         guard let password = passwordTextField.text, !password.isEmpty, password.count >= 6 else {
-            highlightTextField(passwordTextField)
+            TextFieldUtilities.highlightTextField(passwordTextField)
             return
         }
-        resetTextField(passwordTextField)
+        TextFieldUtilities.resetTextField(passwordTextField)
         
         guard let confirm = confirmTextField.text, !confirm.isEmpty else {
-            highlightTextField(confirmTextField)
+            TextFieldUtilities.highlightTextField(confirmTextField)
             return
         }
-        resetTextField(confirmTextField)
+        TextFieldUtilities.resetTextField(confirmTextField)
         
         guard password == confirm else {
-            highlightTextField(passwordTextField)
-            highlightTextField(confirmTextField)
+            TextFieldUtilities.highlightTextField(passwordTextField)
+            TextFieldUtilities.highlightTextField(confirmTextField)
             showErrorAlert(message: "Passwords not match")
             return
         }
@@ -81,16 +81,6 @@ class SignUpController: UIViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: identifier)
         self.navigationController?.pushViewController(controller, animated: true)
-    }
-    
-    func resetTextField(_ textField: UITextField) {
-        textField.layer.borderColor = UIColor.clear.cgColor
-        textField.layer.borderWidth = 0.0
-    }
-    
-    func highlightTextField(_ textField: UITextField) {
-        textField.layer.borderColor = UIColor.red.cgColor
-        textField.layer.borderWidth = 1.0
     }
     
     func showErrorAlert(message: String) {

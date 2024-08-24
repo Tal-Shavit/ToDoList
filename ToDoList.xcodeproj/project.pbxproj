@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		50ACE63E2C7A4189008CE866 /* TextFieldUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50ACE63D2C7A4189008CE866 /* TextFieldUtilities.swift */; };
 		D75523E92C750E9F00747A5A /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = D75523E82C750E9F00747A5A /* Lottie */; };
 		D75523EB2C750EFB00747A5A /* LottieController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75523EA2C750EFB00747A5A /* LottieController.swift */; };
 		D75523ED2C7512AF00747A5A /* Animation - 1724176978489.json in Resources */ = {isa = PBXBuildFile; fileRef = D75523EC2C7512AF00747A5A /* Animation - 1724176978489.json */; };
@@ -48,6 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		50ACE63D2C7A4189008CE866 /* TextFieldUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldUtilities.swift; sourceTree = "<group>"; };
 		D75523EA2C750EFB00747A5A /* LottieController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieController.swift; sourceTree = "<group>"; };
 		D75523EC2C7512AF00747A5A /* Animation - 1724176978489.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Animation - 1724176978489.json"; sourceTree = "<group>"; };
 		D7557D022C6F35CF009D9114 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,6 +108,7 @@
 				D7557D392C6F6C98009D9114 /* CardCell.swift */,
 				D7557D3F2C7090AD009D9114 /* User.swift */,
 				D7557D4D2C70D9AC009D9114 /* Task.swift */,
+				50ACE63D2C7A4189008CE866 /* TextFieldUtilities.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -331,6 +334,7 @@
 			files = (
 				D7557D3C2C708F81009D9114 /* SignUpController.swift in Sources */,
 				D7557D3E2C708FD1009D9114 /* LoginController.swift in Sources */,
+				50ACE63E2C7A4189008CE866 /* TextFieldUtilities.swift in Sources */,
 				D7557D0A2C6F35CF009D9114 /* ViewController.swift in Sources */,
 				D7557D062C6F35CF009D9114 /* AppDelegate.swift in Sources */,
 				D7557D082C6F35CF009D9114 /* SceneDelegate.swift in Sources */,
