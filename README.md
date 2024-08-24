@@ -38,7 +38,7 @@ TodoList App is a simple iOS application that allows users to manage their daily
 - **Add Tasks:** Tap on the add button to add new tasks.
 - **Complete Tasks:** Tap on a task to mark it as completed.
 - **Delete Tasks:**  Tap the edit button, then tap a task to delete it.
-- **Reorder Tasks:** Tap the edit button, then change tasks.he order of t
+- **Reorder Tasks:** Tap the edit button, then change the order of tasks.
 
 ### Demonstration Video
 
