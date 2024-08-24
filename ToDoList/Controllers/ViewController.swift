@@ -184,6 +184,36 @@ class ViewController: UIViewController {
             completion(error)
         }
     }
+    
+    func updateTasksOrderInFirebase() {
+        guard let firebaseUser = Auth.auth().currentUser else { return }
+        let ref = Database.database().reference().child("users").child(firebaseUser.uid).child("tasks")
+        
+        var updatedTasks = [String: [String: Any]]()
+        
+        for (index, task) in tasks.enumerated() {
+            let taskDict: [String: Any] = [
+                "name": task.name,
+                "isChecked": task.isChecked
+            ]
+            updatedTasks["task\(index)"] = taskDict
+        }
+        
+        ref.setValue(updatedTasks)
+    }
+    
+    func deleteTaskFromFirebase(task: Task) {
+        guard let firebaseUser = Auth.auth().currentUser else { return }
+        let ref = Database.database().reference().child("users").child(firebaseUser.uid).child("tasks")
+        
+        ref.queryOrdered(byChild: "name").queryEqual(toValue: task.name).observeSingleEvent(of: .value) { snapshot in
+            for child in snapshot.children {
+                if let childSnapshot = child as? DataSnapshot {
+                    childSnapshot.ref.removeValue()
+                }
+            }
+        }
+    }
 }
 
 
@@ -234,33 +264,5 @@ extension ViewController:  UITabBarDelegate , UITableViewDataSource{
         updateTasksOrderInFirebase()
     }
     
-    func updateTasksOrderInFirebase() {
-        guard let firebaseUser = Auth.auth().currentUser else { return }
-        let ref = Database.database().reference().child("users").child(firebaseUser.uid).child("tasks")
-        
-        var updatedTasks = [String: [String: Any]]()
-        
-        for (index, task) in tasks.enumerated() {
-            let taskDict: [String: Any] = [
-                "name": task.name,
-                "isChecked": task.isChecked
-            ]
-            updatedTasks["task\(index)"] = taskDict
-        }
-        
-        ref.setValue(updatedTasks)
-    }
-    
-    func deleteTaskFromFirebase(task: Task) {
-        guard let firebaseUser = Auth.auth().currentUser else { return }
-        let ref = Database.database().reference().child("users").child(firebaseUser.uid).child("tasks")
-        
-        ref.queryOrdered(byChild: "name").queryEqual(toValue: task.name).observeSingleEvent(of: .value) { snapshot in
-            for child in snapshot.children {
-                if let childSnapshot = child as? DataSnapshot {
-                    childSnapshot.ref.removeValue()
-                }
-            }
-        }
-    }
+  
 }
