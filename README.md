@@ -15,9 +15,11 @@ TodoList App is a simple iOS application that allows users to manage their daily
 
 1. **Sign Up**: Allows users to create a new account.
 <img src="https://github.com/user-attachments/assets/a3e836bb-127e-45e2-928d-565e8799df02" alt="Regular Pop-Up" height="250">
-   
+
+
 2. **Login**: Allows existing users to log in.
 <img src="https://github.com/user-attachments/assets/fe568224-6c3a-4d10-915c-75a015452ae7" alt="Regular Pop-Up" height="250">
+
 
 3. **Task List**: Displays the user's tasks, along with options to add, delete, and reorder tasks.
 <img src="https://github.com/user-attachments/assets/0671c25d-c4dd-4ae5-afab-f6201e55ce20" alt="Regular Pop-Up" height="250">
