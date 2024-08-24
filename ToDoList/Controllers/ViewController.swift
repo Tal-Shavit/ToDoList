@@ -136,13 +136,8 @@ class ViewController: UIViewController {
             if let cell = cardTableView.cellForRow(at: indexPath) as? CardCell, cell.isCheckmarkVisible {
                 getTaskByName(taskName: tasks[i].name) { snapshot in
                     if let taskSnapshot = snapshot {
-                        let newValues = ["isChecked": true] // ערכים חדשים לעדכון
+                        let newValues = ["isChecked": true]
                         self.updateTask(taskSnapshot: taskSnapshot, newValues: newValues) { error in
-                            //                            if let error = error {
-                            //                                print("Error: \(error.localizedDescription)")
-                            //                            } else {
-                            //                                print("Task updated successfully")
-                            //                            }
                         }
                     } else {
                         print("Task not found")
@@ -155,11 +150,6 @@ class ViewController: UIViewController {
                     if let taskSnapshot = snapshot {
                         let newValues = ["isChecked": false]
                         self.updateTask(taskSnapshot: taskSnapshot, newValues: newValues) { error in
-                            //                            if let error = error {
-                            //                                print("Error: \(error.localizedDescription)")
-                            //                            } else {
-                            //                                print("Task updated successfully")
-                            //                            }
                         }
                     } else {
                         print("Task not found")
@@ -188,14 +178,12 @@ class ViewController: UIViewController {
     }
     
     func updateTask(taskSnapshot: DataSnapshot, newValues: [String: Any], completion: @escaping (Error?) -> Void) {
-        guard let firebaseUser = Auth.auth().currentUser else { return }
         let ref = taskSnapshot.ref
         
         ref.updateChildValues(newValues) { error, _ in
             completion(error)
         }
     }
-    
 }
 
 
@@ -225,26 +213,24 @@ extension ViewController:  UITabBarDelegate , UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath){
         if editingStyle == .delete{
+            let taskToDelete = tasks[indexPath.row]
+            
+            deleteTaskFromFirebase(task: taskToDelete)
             tasks.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
+            
             self.updateTotalLabel()
             self.updateDoneLabel()
             self.updateTableViewHeight()
+            
+            
         }
     }
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        //        tasks.swapAt(sourceIndexPath.row, destinationIndexPath.row)
-        //        self.updateTotalLabel()
-        //        self.updateDoneLabel()
-        //        self.updateTableViewHeight()
         let movedTask = tasks.remove(at: sourceIndexPath.row)
         tasks.insert(movedTask, at: destinationIndexPath.row)
-        
         tableView.reloadData()
-        //        self.updateTotalLabel()
-        //        self.updateDoneLabel()
-        //        self.updateTableViewHeight()
         updateTasksOrderInFirebase()
     }
     
@@ -263,5 +249,18 @@ extension ViewController:  UITabBarDelegate , UITableViewDataSource{
         }
         
         ref.setValue(updatedTasks)
+    }
+    
+    func deleteTaskFromFirebase(task: Task) {
+        guard let firebaseUser = Auth.auth().currentUser else { return }
+        let ref = Database.database().reference().child("users").child(firebaseUser.uid).child("tasks")
+        
+        ref.queryOrdered(byChild: "name").queryEqual(toValue: task.name).observeSingleEvent(of: .value) { snapshot in
+            for child in snapshot.children {
+                if let childSnapshot = child as? DataSnapshot {
+                    childSnapshot.ref.removeValue()
+                }
+            }
+        }
     }
 }
