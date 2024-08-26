@@ -139,8 +139,6 @@ class ViewController: UIViewController {
                         let newValues = ["isChecked": true]
                         self.updateTask(taskSnapshot: taskSnapshot, newValues: newValues) { error in
                         }
-                    } else {
-                        print("Task not found")
                     }
                 }
                 doneCount += 1
@@ -151,8 +149,6 @@ class ViewController: UIViewController {
                         let newValues = ["isChecked": false]
                         self.updateTask(taskSnapshot: taskSnapshot, newValues: newValues) { error in
                         }
-                    } else {
-                        print("Task not found")
                     }
                 }
                 notDoneCount += 1
@@ -252,8 +248,6 @@ extension ViewController:  UITabBarDelegate , UITableViewDataSource{
             self.updateTotalLabel()
             self.updateDoneLabel()
             self.updateTableViewHeight()
-            
-            
         }
     }
     

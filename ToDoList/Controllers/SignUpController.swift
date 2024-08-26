@@ -53,11 +53,6 @@ class SignUpController: UIViewController {
         }
         
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-            if let error = error {
-                self.showErrorAlert(message: "Error creating user: \(error.localizedDescription)")
-                return
-            }
-            
             if let firebaseUser = authResult?.user {
                 let ref = Database.database().reference()
                 let userDict: [String: Any] = [
@@ -67,9 +62,8 @@ class SignUpController: UIViewController {
                 ]
                 ref.child("users").child(firebaseUser.uid).setValue(userDict) { error, _ in
                     if let error = error {
-                        print("Error saving user: \(error.localizedDescription)")
+                        print("Error")
                     } else {
-                        print("User saved successfully!")
                         self.openNewControlletr(withIdentifier: "TasksID")
                     }
                 }
